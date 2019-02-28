@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace PAINt
 {
-    class QuadBrush : Brush
+    class Eraser : Brush
     {
-        public QuadBrush(Color brushColor, int size)
-            : base(brushColor, size)
+        public Eraser(Color brushColor, int size) : base(brushColor, size)
         {
         }
 

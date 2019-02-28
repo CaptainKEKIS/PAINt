@@ -19,7 +19,7 @@ namespace PAINt
 
         Color SelectedColor
         {
-            get { return Color.Red; }
+            get { return colorDialog1.Color; }
         }
 
         int SelectedSize
@@ -45,6 +45,8 @@ namespace PAINt
                 }
             }
             pictureBox1.Image = bmp;
+            pictureBox1.Width = Width;
+            pictureBox1.Height = Height;
             if (oldImage != null)
             {
                 oldImage.Dispose();
@@ -54,12 +56,8 @@ namespace PAINt
         public MainForm()
         {
             InitializeComponent();
-            CreateBlank(pictureBox1.Width = 1000, pictureBox1.Height = 500);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
+            CreateBlank(pictureBox1.Width, pictureBox1.Height);
+            colorDialogButt.BackColor = SelectedColor;
         }
 
         private void buttonSquare_Click(object sender, EventArgs e)
@@ -73,7 +71,7 @@ namespace PAINt
             {
                 return;
             }
-                _selectedBrush.Draw(pictureBox1.Image as Bitmap, _x, _y, pictureBox1.Width, pictureBox1.Height, pictureBox1.CreateGraphics());
+                _selectedBrush.Draw(pictureBox1.Image as Bitmap, _x, _y, pictureBox1.Width, pictureBox1.Height);
                 pictureBox1.Refresh();
                 _mouseClicked = true;
         }
@@ -89,19 +87,66 @@ namespace PAINt
             _y = e.Y;// > 0 ? e.Y : 0;
             if (_mouseClicked)
             {
-                    _selectedBrush.Draw(pictureBox1.Image as Bitmap, _x, _y, pictureBox1.Width, pictureBox1.Height, pictureBox1.CreateGraphics());
+                    _selectedBrush.Draw(pictureBox1.Image as Bitmap, _x, _y, pictureBox1.Width, pictureBox1.Height);
                     pictureBox1.Refresh();
             }
         }
 
         private void buttonCircle_Click(object sender, EventArgs e)
         {
-            _selectedBrush = new CircleBrush(SelectedColor, SelectedSize);
+            
         }
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Create form = new Create();
+            form.ShowDialog();
+            if (form.Canceled == false)
+            {
+                CreateBlank(form.Wdth, form.Hght);
+                FileName = form.FileName;
+            }
+        }
+
+        private void colorDialogButt_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                colorDialogButt.BackColor = colorDialog1.Color;
+            }
+        }
+
+        private void buttonColor_Click(object sender, EventArgs e)
+        {
+            colorDialogButt.BackColor = (sender as Button).BackColor;
+            colorDialog1.Color = (sender as Button).BackColor;
+            if (_selectedBrush != null)
+            {
+                _selectedBrush.BrushColor = (sender as Button).BackColor;
+            }
+        }
+
+        private void tbBrushSize_ValueChanged(object sender, EventArgs e)
+        {
+            if (_selectedBrush != null)
+            {
+                _selectedBrush.Size = SelectedSize;
+            }
+        }
+
+        private void buttonRectangle_Click(object sender, EventArgs e)
+        {
+            _selectedBrush = new RectBrush(SelectedColor, SelectedSize);
+        }
+
+        private void buttonWhat_Click(object sender, EventArgs e)
+        {
+            _selectedBrush = new Eraser(DefaultColor, SelectedSize);
         }
     }
 }

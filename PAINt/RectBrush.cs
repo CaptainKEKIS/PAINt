@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace PAINt
 {
-    class QuadBrush : Brush
+    class RectBrush : Brush
     {
-        public QuadBrush(Color brushColor, int size)
-            : base(brushColor, size)
+        public RectBrush(Color brushColor, int size)
+           : base(brushColor, size)
         {
         }
 
         public override void Draw(Bitmap image, int x, int y, int width, int height)
         {
-            for (int y0 = y - Size; y0 < y + Size; ++y0)
+            for (int y0 = y - Size/2; y0 < y + Size/2; ++y0)
             {
                 for (int x0 = x - Size; x0 < x + Size; ++x0)
                 {

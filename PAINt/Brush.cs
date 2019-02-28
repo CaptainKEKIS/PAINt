@@ -16,6 +16,6 @@ namespace PAINt
             BrushColor = brushColor;
             Size = size;
         }
-        public abstract void Draw(Bitmap image, int x, int y, int width, int height, Graphics Graph);
+        public abstract void Draw(Bitmap image, int x, int y, int width, int height);
     }
 }

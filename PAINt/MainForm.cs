@@ -71,9 +71,9 @@ namespace PAINt
             {
                 return;
             }
-                _selectedBrush.Draw(pictureBox1.Image as Bitmap, _x, _y, pictureBox1.Width, pictureBox1.Height);
-                pictureBox1.Refresh();
-                _mouseClicked = true;
+            _selectedBrush.Draw(pictureBox1.Image as Bitmap, _x, _y, pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Refresh();
+            _mouseClicked = true;
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -87,14 +87,14 @@ namespace PAINt
             _y = e.Y;// > 0 ? e.Y : 0;
             if (_mouseClicked)
             {
-                    _selectedBrush.Draw(pictureBox1.Image as Bitmap, _x, _y, pictureBox1.Width, pictureBox1.Height);
-                    pictureBox1.Refresh();
+                _selectedBrush.Draw(pictureBox1.Image as Bitmap, _x, _y, pictureBox1.Width, pictureBox1.Height);
+                pictureBox1.Refresh();
             }
         }
 
         private void buttonCircle_Click(object sender, EventArgs e)
         {
-            
+            _selectedBrush = new SuperStar(SelectedColor, SelectedSize);
         }
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
@@ -118,6 +118,10 @@ namespace PAINt
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 colorDialogButt.BackColor = colorDialog1.Color;
+                if (_selectedBrush != null)
+                {
+                    _selectedBrush.BrushColor = colorDialog1.Color;
+                }
             }
         }
 
@@ -147,6 +151,28 @@ namespace PAINt
         private void buttonWhat_Click(object sender, EventArgs e)
         {
             _selectedBrush = new Eraser(DefaultColor, SelectedSize);
+        }
+
+        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if(saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                pictureBox1.Image.Save(saveFileDialog.FileName);
+            }
+        }
+
+        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if(openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap image = new Bitmap(openFileDialog.FileName);
+                //вместо pictureBox1 укажите pictureBox, в который нужно загрузить изображение 
+                this.pictureBox1.Size = image.Size;
+                pictureBox1.Image = image;
+                pictureBox1.Invalidate();
+            }
         }
     }
 }
